@@ -1,0 +1,17 @@
+# Python 3.11. Installed by setup_environment.sh.
+
+# coremltools 9.0 is tested up to torch 2.7.0 (coremltools/_deps/__init__.py, _TORCH_MAX_VERSION).
+# Newer torch converts with an "untested" warning and can fail in odd ways, so torch is pinned to match.
+coremltools==9.0
+torch==2.7.0
+
+# The plan's line numbers in modeling_moonshine_streaming.py come from this exact version.
+transformers==5.22.2
+
+# moonshine-voice decides which .ort build gets downloaded (the answer key for every step's check (c)),
+# so it is pinned to keep the reference outputs from changing under us.
+moonshine-voice==0.1.6
+onnxruntime==1.31.1
+
+numpy==2.4.6
+soundfile==0.14.0

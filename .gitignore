@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+.venv/
+
+# Downloads and generated files, rebuilt by setup_environment.sh and the step scripts
+third_party/
+models/
+huggingface_release/
+ref/*
+!ref/.gitkeep
