@@ -45,6 +45,6 @@ The table has 4096 rows (81.92 s), but only rows 0–1999, the first 40 s, were 
 ## Files
 
 - `wrapper.py`: this stage in PyTorch, 4 frames per call
-- `convert.py`: writes `models/adapter.mlpackage` (float16, ships to the watch) and `models/adapter_float32.mlpackage` (used only by the tests)
-- `test.py`: the call bookkeeping (`adapter_calls`), checks (a), (b), (c); writes `ref/step3.npz` for Step 4
+- `convert.py`: writes `models/adapter.mlpackage` (float16, released) and `models/adapter_float32.mlpackage` (used only by the tests)
+- `test.py`: the call bookkeeping (`adapter_calls`); checks the wrapper call by call against Transformers on the whole recording (a), Core ML against the wrapper (b), and Moonshine's `adapter.ort` against the wrapper (c); writes `ref/step3.npz` for Step 4
 - `tools/inspect_position_table.py`: reads `adapter.ort`'s graph and stored table, and shows which rows of `pos_emb` were trained

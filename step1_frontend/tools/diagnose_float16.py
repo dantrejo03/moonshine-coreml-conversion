@@ -1,5 +1,5 @@
 """Step 1 float16 diagnosis on the Neural Engine: the evidence for the SiLU recipe in common/coreml_torch_ops.py.
-Run from conversion/:
+Run from the top of the repo:
 
     python -m step1_frontend.tools.diagnose_float16
 

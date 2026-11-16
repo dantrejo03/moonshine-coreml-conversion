@@ -1,4 +1,4 @@
-"""Step 1 conversion: the StreamingFrontend wrapper to Core ML. Run from conversion/:
+"""Step 1 conversion: the StreamingFrontend wrapper to Core ML. Run from the top of the repo:
 
     python -m step1_frontend.convert
 

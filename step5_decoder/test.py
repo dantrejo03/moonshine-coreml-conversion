@@ -1,4 +1,4 @@
-"""Step 5 checks for the decoder step. Run from conversion/, after step4_cross_kv.test (it writes ref/step4.npz)
+"""Step 5 checks for the decoder step. Run from the top of the repo, after step4_cross_kv.test (it writes ref/step4.npz)
 and step5_decoder.convert:
 
     python -m step5_decoder.test

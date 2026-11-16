@@ -1,4 +1,4 @@
-"""Step 6: the push-to-talk app simulated on the Mac with only the five Core ML models. Run from conversion/,
+"""Step 6: the push-to-talk app simulated on the Mac with only the five Core ML models. Run from the top of the repo,
 after every step's convert.py:
 
     python -m pipeline.test

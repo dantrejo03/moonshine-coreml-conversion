@@ -1,4 +1,4 @@
-"""Step 2 conversion: the StreamingEncoder wrapper to Core ML. Run from conversion/:
+"""Step 2 conversion: the StreamingEncoder wrapper to Core ML. Run from the top of the repo:
 
     python -m step2_encoder.convert
 

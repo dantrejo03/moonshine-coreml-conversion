@@ -1,5 +1,5 @@
 """What Moonshine's own library actually runs for each press: every onnxruntime call it makes, read from its own log.
-Run from conversion/:
+Run from the top of the repo:
 
     python -m pipeline.tools.inspect_moonshine_library_calls
 

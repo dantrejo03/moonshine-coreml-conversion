@@ -1,4 +1,4 @@
-"""Step 2 checks for the streaming encoder. Run from conversion/, after step1_frontend.test (it writes
+"""Step 2 checks for the streaming encoder. Run from the top of the repo, after step1_frontend.test (it writes
 ref/step1.npz) and step2_encoder.convert:
 
     python -m step2_encoder.test

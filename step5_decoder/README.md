@@ -48,7 +48,7 @@ Rows of the state after `position` are blocked by a mask, and so are buffer fram
   ```
 
   Nothing is reset between updates: each step writes its own row before reading it, and later rows are masked, so an earlier update's rows are never read. `decode` in `test.py` is this loop in Python.
-- A new state starts as zeros (on the Mac; to be confirmed on the watch). Old values are harmless, but NaN would not be: a fresh state must not hold NaN.
+- A new state starts as zeros (checked on the Mac only). Old values are harmless, but NaN would not be: a fresh state must not hold NaN.
 - Predictions that share a state run one at a time.
 - Nothing in the model checks `position`; the token cap keeps it below 128.
 - Memory at float16: the state 1.57 MB, the cross buffers 9.44 MB (5.90 MB of numbers, the rest padding).
@@ -59,14 +59,14 @@ How the state is laid out and written decides whether this model runs on the Neu
 
 - Each layer writes its new row into the state with a slice assignment at `position`, then reads its cache back. Rewriting the whole state as a blend doesn't compile for the Neural Engine.
 - Each state row is padded from 40 numbers to 64, a multiple of 32. With 40, the model compiles but every prediction on the Neural Engine fails.
-- Each `k_cross` and `v_cross` row is padded to 64 as well (2026-11-12). With 40, Instruments on the Series 9 showed Core ML re-laying out both buffers on every call, outside the model's own operations (E5RT `PerformDataFormatChange`, mostly memory copying; `tools/list_decoder_cpu_operations.py` showed no such conversion in the program). Padded, that's gone, and the median step on the watch went from 19.7 to 15.7 ms, with identical tokens.
-- Swift's `k_cross` and `v_cross` buffers are IOSurface-backed (`MLMultiArray(pixelBuffer:shape:)`, a float16 pixel buffer 64 wide and 36,864 tall). With ordinary arrays, Core ML copied both into its own buffers on every call (`MLE5BindInputBufferObjectByCopyingMultiArray`); with surfaces it doesn't, and the on-watch check's median step went from 15.8 to 12.4 ms.
+- Each `k_cross` and `v_cross` row is padded to 64 as well. With 40, Instruments on the Series 9 showed Core ML re-laying out both buffers on every call, outside the model's own operations (E5RT `PerformDataFormatChange`, mostly memory copying; `tools/list_decoder_cpu_operations.py` showed no such conversion in the program). Padded, that's gone, and the median step on the watch went from 19.7 to 15.7 ms, with identical tokens.
+- Swift's `k_cross` and `v_cross` buffers are IOSurface-backed (`MLMultiArray(pixelBuffer:shape:)`, a float16 pixel buffer 64 wide and 36,864 tall). With ordinary arrays, Core ML copied both into its own buffers on every call (`MLE5BindInputBufferObjectByCopyingMultiArray`); with surfaces it doesn't, and the median step on the watch went from 15.8 to 12.4 ms.
 
 On the Mac, 485 operations run on the Neural Engine, all state reads and writes included (12 of them cut each layer's cross K/V rows to 40 numbers); 22 small ones run on the CPU (the token and rotary-position lookups, the position comparisons, a few conversions). One step takes about 6 ms in Python on the Mac. On the Series 9, the Neural Engine works about 9.6 ms of each step (Instruments).
 
 ## Part 5a: the cache passed in and out
 
-`decoder_step_explicit_cache.mlpackage` (and its float32 copy) is the same step with `k_self` and `v_self` [6, 1, 8, 128, 40] as inputs and `k_self_out`, `v_self_out` as outputs: the cache with row `position` replaced. Its `k_cross` and `v_cross` stay 40 wide. It is how this step was first checked against Transformers and Moonshine; on the Neural Engine its scores are bit-identical to `decoder_step.mlpackage`'s. The app doesn't use it.
+`decoder_step_explicit_cache.mlpackage` (and its float32 copy) is the same step with `k_self` and `v_self` [6, 1, 8, 128, 40] as inputs and `k_self_out`, `v_self_out` as outputs: the cache with row `position` replaced. Its `k_cross` and `v_cross` stay 40 wide. It is how this step was first checked against Transformers and Moonshine; on the Neural Engine its scores are bit-identical to `decoder_step.mlpackage`'s. It isn't released.
 
 ## Where it comes from
 
@@ -76,7 +76,7 @@ On the Mac, 485 operations run on the Neural Engine, all state reads and writes 
 ## Files
 
 - `wrapper.py`: this stage in PyTorch: `DecoderStepWithExplicitCache` (5a) and `DecoderStepWithStatefulCache` (5b)
-- `convert.py`: writes `models/decoder_step.mlpackage` (ships to the watch) and the two 5a packages (used only by the tests)
-- `test.py`: the decoding loop (`decode`), Swift's bookkeeping for both parts (`ExplicitCacheSession`, `StatefulCacheSession`), checks (a), (b), (c) and 5b's; writes `ref/step5.npz` (each test segment's tokens) for Step 6
+- `convert.py`: writes `models/decoder_step.mlpackage` (released) and the two 5a packages (used only by the tests)
+- `test.py`: the decoding loop (`decode`), Swift's bookkeeping for both parts (`ExplicitCacheSession`, `StatefulCacheSession`), checks the 5a wrapper against Transformers' `model.generate` (a), Core ML against the wrapper (b), and Moonshine's `decoder_kv.ort` against the wrapper (c), then 5b's stateful wrapper and `decoder_step.mlpackage` against 5a, token for token; writes `ref/step5.npz` (each test segment's tokens) for the pipeline
 - `tools/diagnose_state_on_neural_engine.py`: converts the 5b step with its state laid out and written in different ways, to see which runs on the Neural Engine
 - `tools/list_decoder_cpu_operations.py`: lists the operations Core ML runs on the CPU, and every one that reads the cross K/V, with names, types and shapes

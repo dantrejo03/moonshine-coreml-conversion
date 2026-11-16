@@ -43,6 +43,6 @@ Each convolution looks at its current input plus the 4 time steps before it. At 
 ## Files
 
 - `wrapper.py`: this stage in PyTorch, one chunk per call
-- `convert.py`: writes `models/frontend.mlpackage` (float16, ships to the watch) and `models/frontend_float32.mlpackage` (used only by the tests)
-- `test.py`: checks (a), (b), (c); writes `ref/step1.npz` for Step 2
+- `convert.py`: writes `models/frontend.mlpackage` (float16, released) and `models/frontend_float32.mlpackage` (used only by the tests)
+- `test.py`: checks the wrapper against Transformers (a), Core ML against the wrapper (b), and Moonshine's `frontend.ort` against the wrapper (c); writes `ref/step1.npz` for Step 2
 - `tools/diagnose_float16.py`: compares float16 and float32 stage by stage; the evidence for the SiLU recipe in `convert.py`

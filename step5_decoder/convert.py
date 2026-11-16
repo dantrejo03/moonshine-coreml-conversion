@@ -1,4 +1,4 @@
-"""Step 5 conversion: the decoder step wrappers to Core ML. Run from conversion/:
+"""Step 5 conversion: the decoder step wrappers to Core ML. Run from the top of the repo:
 
     python -m step5_decoder.convert
 

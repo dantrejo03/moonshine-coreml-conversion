@@ -52,7 +52,7 @@ Every kept frame has 96 real frames before it (or the start of the recording) an
 ## Files
 
 - `wrapper.py`: this stage in PyTorch, one window per call
-- `convert.py`: writes `models/encoder.mlpackage` (float16, ships to the watch) and `models/encoder_float32.mlpackage` (used only by the tests)
-- `test.py`: the window math (`streaming_windows`), checks (a), (b), (c); writes `ref/step2.npz` for Step 3
+- `convert.py`: writes `models/encoder.mlpackage` (float16, released) and `models/encoder_float32.mlpackage` (used only by the tests)
+- `test.py`: the window math (`streaming_windows`); checks the wrapper window by window against Transformers on the whole recording (a), Core ML against the wrapper (b), and Moonshine's `encoder.ort` against the wrapper (c); writes `ref/step2.npz` for Step 3
 - `tools/diagnose_float16.py`: compares float16 and float32 layer by layer, on the GPU and on the Neural Engine, and prints the largest value each layer reaches
 - `tools/diagnose_ort.py`: three experiments on why Moonshine's quantized `encoder.ort` differs from the float model

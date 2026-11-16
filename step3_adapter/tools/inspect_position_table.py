@@ -1,5 +1,5 @@
 """Two facts about the adapter's position table (pos_emb), read from the files; nothing runs on Core ML.
-Run from conversion/:
+Run from the top of the repo:
 
     python -m step3_adapter.tools.inspect_position_table
 

@@ -1,4 +1,4 @@
-"""Step 3 checks for the adapter. Run from conversion/, after step2_encoder.test (it writes ref/step2.npz) and
+"""Step 3 checks for the adapter. Run from the top of the repo, after step2_encoder.test (it writes ref/step2.npz) and
 step3_adapter.convert:
 
     python -m step3_adapter.test

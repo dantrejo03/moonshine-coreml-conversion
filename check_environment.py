@@ -1,6 +1,6 @@
 """Checks that everything the conversion steps rely on is installed, downloaded and working.
 
-Run from conversion/ with the venv's Python. Exits non-zero if any check fails.
+Run from the top of the repo with the venv's Python. Exits non-zero if any check fails.
 Shapes of the .ort pieces are deliberately not printed here; Step 1 does that.
 """
 

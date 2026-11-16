@@ -1,5 +1,5 @@
 """Step 2 diagnosis for check (c): how far is Moonshine's quantized encoder.ort from the float encoder, and why?
-Run from conversion/:
+Run from the top of the repo:
 
     python -m step2_encoder.tools.diagnose_ort
 

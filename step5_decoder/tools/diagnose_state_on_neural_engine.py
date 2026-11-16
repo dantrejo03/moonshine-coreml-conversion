@@ -1,7 +1,7 @@
 """Why decoder_step.mlpackage doesn't compile for the Neural Engine. Converts the 5b decoder step with its state laid
 out and written in different ways, and for each prints whether the Neural Engine compiles it, where its ops run on
 CPU_AND_NE, and, if it compiles, whether it decodes beckett as the 5a wrapper does. Nothing is saved.
-Run from conversion/, after step5_decoder.test has passed once (it needs ref/step4.npz and ref/step2.npz):
+Run from the top of the repo, after step5_decoder.test has passed once (it needs ref/step4.npz and ref/step2.npz):
 
     python -m step5_decoder.tools.diagnose_state_on_neural_engine
 

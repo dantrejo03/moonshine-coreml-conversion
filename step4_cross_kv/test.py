@@ -1,4 +1,4 @@
-"""Step 4 checks for cross K/V. Run from conversion/, after step3_adapter.test (it writes ref/step3.npz) and
+"""Step 4 checks for cross K/V. Run from the top of the repo, after step3_adapter.test (it writes ref/step3.npz) and
 step4_cross_kv.convert:
 
     python -m step4_cross_kv.test

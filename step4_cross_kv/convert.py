@@ -1,4 +1,4 @@
-"""Step 4 conversion: the CrossAttentionKeyValueProjection wrapper to Core ML. Run from conversion/:
+"""Step 4 conversion: the CrossAttentionKeyValueProjection wrapper to Core ML. Run from the top of the repo:
 
     python -m step4_cross_kv.convert
 

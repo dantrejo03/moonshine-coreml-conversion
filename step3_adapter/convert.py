@@ -1,4 +1,4 @@
-"""Step 3 conversion: the StreamingAdapter wrapper to Core ML. Run from conversion/:
+"""Step 3 conversion: the StreamingAdapter wrapper to Core ML. Run from the top of the repo:
 
     python -m step3_adapter.convert
 

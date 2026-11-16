@@ -1,5 +1,5 @@
 """Why cross_kv.mlpackage runs entirely on the CPU. Converts variants of the wrapper to float16 and prints each one's
-compute plan for CPU_AND_NE (what Step 7's app loads). Nothing is saved. Run from conversion/:
+compute plan for CPU_AND_NE (what Step 7's app loads). Nothing is saved. Run from the top of the repo:
 
     python -m step4_cross_kv.tools.diagnose_compute_plan
 

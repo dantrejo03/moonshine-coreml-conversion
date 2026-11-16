@@ -1,4 +1,4 @@
-"""Step 2 float16 diagnosis: does float16 hold up on the Neural Engine, layer by layer? Run from conversion/:
+"""Step 2 float16 diagnosis: does float16 hold up on the Neural Engine, layer by layer? Run from the top of the repo:
 
     python -m step2_encoder.tools.diagnose_float16
 

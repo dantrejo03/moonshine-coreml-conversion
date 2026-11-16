@@ -1,5 +1,5 @@
 """What Moonshine's cross_kv.ort computes, read from the file; nothing runs, on Core ML or onnxruntime.
-Run from conversion/, after step3_adapter.test (it writes ref/step3.npz):
+Run from the top of the repo, after step3_adapter.test (it writes ref/step3.npz):
 
     python -m step4_cross_kv.tools.inspect_cross_kv_ort
 

@@ -47,12 +47,12 @@ for each decoder layer l = 0 ..< 6:
 
 ## On the Neural Engine
 
-On the Mac, Core ML runs this model entirely on the CPU, under both `.all` and `.cpuAndNeuralEngine`. The 5-D outputs are not the reason: at 116 rows per call the same graph runs entirely on the Neural Engine, and at 4 rows even a single layer stays on the CPU (`tools/diagnose_compute_plan.py`). A call is small, about 4.9 million multiply-adds. Step 7 times it on the watch.
+On the Mac, Core ML runs this model entirely on the CPU, under both `.all` and `.cpuAndNeuralEngine`. The 5-D outputs are not the reason: at 116 rows per call the same graph runs entirely on the Neural Engine, and at 4 rows even a single layer stays on the CPU (`tools/diagnose_compute_plan.py`). A call is small, about 4.9 million multiply-adds.
 
 ## Files
 
 - `wrapper.py`: this stage in PyTorch, 4 rows per call
-- `convert.py`: writes `models/cross_kv.mlpackage` (float16, ships to the watch) and `models/cross_kv_float32.mlpackage` (used only by the tests)
-- `test.py`: the buffer bookkeeping (`append_cross_kv`), checks (a), (b), (c); writes `ref/step4.npz` for Step 5
+- `convert.py`: writes `models/cross_kv.mlpackage` (float16, released) and `models/cross_kv_float32.mlpackage` (used only by the tests)
+- `test.py`: the buffer bookkeeping (`append_cross_kv`); checks the wrapper's appended buffers against Transformers' cross-attention cache for the whole recording (a), Core ML against the wrapper (b), and Moonshine's `cross_kv.ort` against the wrapper (c); writes `ref/step4.npz` for Step 5
 - `tools/inspect_cross_kv_ort.py`: reads `cross_kv.ort`'s graph and weights, compares the weights with the checkpoint's, and computes the 8-bit step it uses for the memory
 - `tools/diagnose_compute_plan.py`: compute plans for variants of the wrapper, to see what keeps it off the Neural Engine

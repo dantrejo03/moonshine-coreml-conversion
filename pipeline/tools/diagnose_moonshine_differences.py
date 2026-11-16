@@ -1,4 +1,4 @@
-"""Which of Moonshine's 8-bit .ort pieces makes its text differ from the original model's. Run from conversion/:
+"""Which of Moonshine's 8-bit .ort pieces makes its text differ from the original model's. Run from the top of the repo:
 
     python -m pipeline.tools.diagnose_moonshine_differences
 

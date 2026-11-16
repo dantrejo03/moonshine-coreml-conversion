@@ -5,7 +5,7 @@ the CPU (E5RT::Ops::CastOperation), most of it plain memory copying (_platform_m
 means copying something big, and the only big inputs are the cross K/V buffers, k_cross and v_cross (2.9 MB each).
 This lists every operation that runs on the CPU, then every operation that reads k_cross or v_cross on any chip, each
 with the names, types and shapes it reads and writes, to see whether a conversion of those buffers is among them.
-Nothing is saved. Run from conversion/:
+Nothing is saved. Run from the top of the repo:
 
     python -m step5_decoder.tools.list_decoder_cpu_operations
 

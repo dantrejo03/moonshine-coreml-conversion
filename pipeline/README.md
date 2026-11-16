@@ -1,10 +1,10 @@
-# Step 6: The pipeline
+# The pipeline
 
-The five Core ML models chained the way the watch app will run them: audio in 80 ms chunks while the button is held, a tentative transcript every 0.5 s, the final transcript on release. Nothing here is converted. This is the glue between the models (state, loops, text), written in Python so it can be checked against Moonshine and Transformers before Step 7 ports it to Swift.
+The five Core ML models chained into a push-to-talk transcriber: audio in 80 ms chunks while a button is held, a tentative transcript every 0.5 s, the final transcript on release. Nothing here is converted. This is the glue between the models (state, loops, text), in Python so it can be checked against Moonshine and Transformers. [swift-moonshine-coreml](https://github.com/dantrejo03/swift-moonshine-coreml) is the same thing in Swift.
 
 ## One press
 
-A press is one **segment**: everything starts over on press, and a press holds at most 15.36 s (Mmax = 768 memory frames; version 1 of the app releases at that cap).
+A press is one **segment**: everything starts over on press, and a press holds at most 15.36 s (Mmax = 768 memory frames).
 
 ```
 press()
@@ -47,7 +47,7 @@ release(the last 0-1279 samples)
 
 ## Recordings longer than a press
 
-`test.py` plays a long recording as several presses, each released at a pause: from each press's start, the quietest 100 ms between 10 s and 15.36 s later, cut in its middle (`press_boundaries`). It's the plan's version-2 rule, but run on the whole file in advance, standing in for a person who releases at a pause. Doing it live, while recording, is Step 7's version 2: the cut lands in audio already processed, so the next press has to replay it.
+`test.py` plays a long recording as several presses, each released at a pause: from each press's start, the quietest 100 ms between 10 s and 15.36 s later, cut in its middle (`press_boundaries`). It stands in for a person who releases at a pause, decided on the whole file in advance.
 
 ## The tokenizer
 
@@ -68,7 +68,7 @@ release(the last 0-1279 samples)
 
 - `tokenizer.py`: the tokenizer port (`MoonshineTokenizer`)
 - `push_to_talk.py`: the state and press, add_chunk, update, release (`PushToTalkTranscriber`), the five models loaded once (`load_pipeline_models`), timing per stage
-- `test.py`: plays the test recordings press by press and prints every update. For each press: (A) checks it against `model.generate`; (B) checks Moonshine's transcriber against its `.ort` pieces run here, through our tokenizer; then compares our tokens with Moonshine's. It compares whole recordings with Moonshine's default transcriber (C) and `model.generate` on the whole file (D), prints timing, and writes `ref/step6.npz` (each press's boundaries and final tokens) for Step 7
+- `test.py`: plays the test recordings press by press and prints every update. For each press: (A) checks it against `model.generate`; (B) checks Moonshine's transcriber against its `.ort` pieces run here, through this pipeline's tokenizer; then compares this pipeline's tokens with Moonshine's. It compares whole recordings with Moonshine's default transcriber (C) and `model.generate` on the whole file (D), prints timing, and writes `ref/step6.npz` (each press's boundaries and final tokens)
 - `tools/diagnose_moonshine_differences.py`: runs each press with the first k stages as Moonshine's `.ort` pieces and the rest in float, for k = 0 to 5, to find which stage's 8-bit rounding changes Moonshine's text
 - `tools/inspect_moonshine_library_calls.py`: every onnxruntime call Moonshine's own library makes for each press, from its `log_ort_run` log
 - `tools/export_reference_for_swift.py`: writes `ref/reference_transcripts.json` (`ref/step6.npz`'s utterances and final tokens, their texts, every single token's text, and each recording's sample count and SHA-256), the reference swift-moonshine-coreml's tests check the models against (RELEASING.md)

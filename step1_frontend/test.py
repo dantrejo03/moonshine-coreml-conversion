@@ -1,4 +1,4 @@
-"""Step 1 checks for the streaming frontend. Run from conversion/, after convert.py:
+"""Step 1 checks for the streaming frontend. Run from the top of the repo, after convert.py:
 
     python -m step1_frontend.test
 
